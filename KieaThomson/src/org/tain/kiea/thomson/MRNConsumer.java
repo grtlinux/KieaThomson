@@ -1,5 +1,7 @@
 package org.tain.kiea.thomson;
 
+import org.tain.utils.ClassUtils;
+
 public class MRNConsumer {
 
 	private static final boolean flag;
@@ -9,4 +11,9 @@ public class MRNConsumer {
 	}
 
 	///////////////////////////////////////////////////////////////////////////
+
+	public MRNConsumer(String[] args) throws Exception {
+		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
+
+	}
 }
