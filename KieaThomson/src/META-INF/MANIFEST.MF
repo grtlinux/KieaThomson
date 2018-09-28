@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Main-Class: org.tain.runjar.RunJarLoader
+Class-Path: ./
+Title: Kiea Thomson
+Version: ver 1.0
+Package: org.tain.runjar
+Created-By: TAIN, Inc.
+Company: TAIN, Inc.
+Author: Kiea Seok Kang
+Comment: it's for you.
+  .
+Rsrc-Main-Class: org.tain.kiea.thomson.KieaThomsonMain
+Rsrc-Class-Path: ./
+  lib/gson-2.7.jar
+
+
+
+
+
