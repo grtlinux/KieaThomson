@@ -1,4 +1,5 @@
 # KieaThomson
-[Thomson project](https://github.com/grtlinux/KieaThomson/ "Kiea Thomson")
 
-  DOS> echo Hello world!!!
+[Thomson project 1.0](https://github.com/grtlinux/KieaThomson/KieaThomson/ "Kiea Thomson")
+
+  DOS> java -jar KieaThomson.jar
