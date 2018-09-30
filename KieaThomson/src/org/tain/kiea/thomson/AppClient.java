@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import org.json.JSONObject;
+import org.tain.utils.ResourcesUtils;
 
 import com.thomsonreuters.ema.access.AckMsg;
 import com.thomsonreuters.ema.access.DataType;
@@ -65,11 +66,13 @@ public final class AppClient implements OmmConsumerClient {
 	private Boolean _udpEnable;
 	private String _udpHost;
 	private String _udpPort;
+	private String _charSet;
 
 	public AppClient(Boolean _udpEnable, String _udpHost, String _udpPort) {
 		this._udpEnable = _udpEnable;
 		this._udpHost = _udpHost;
 		this._udpPort = _udpPort;
+		this._charSet = ResourcesUtils.getString("org.tain.kiea.thomson.charSet");
 	}
 
 	@Override
@@ -292,9 +295,10 @@ public final class AppClient implements OmmConsumerClient {
 
 					if (fieldEntry.buffer().buffer().limit() == totalSize) {
 						// there is only one segment, we are ready unzip using gzip
-						String strFlatFrag = unzipPayload(Arrays.copyOf(fieldEntry.buffer().buffer().array(), fieldEntry.buffer().buffer().limit()));
-						if (flag) System.out.println("  => FRAGMENT JSON STRING: " + strFlatFrag);
+						String strFlatFrag = null;
 						try {
+							strFlatFrag = unzipPayload(Arrays.copyOf(fieldEntry.buffer().buffer().array(), fieldEntry.buffer().buffer().limit()));
+							if (flag) System.out.println("  => FRAGMENT JSON STRING: " + strFlatFrag);
 							// pretty-print json response
 							JSONObject jsonResponse = new JSONObject(strFlatFrag);
 							int spacesToIndentEachLevel = 2;
@@ -362,7 +366,7 @@ public final class AppClient implements OmmConsumerClient {
 		}
 	}
 
-	private String unzipPayload(byte[] bytes) {
+	private String unzipPayload(byte[] bytes) throws Exception {
 		ByteArrayInputStream bis = null;
 		ByteArrayOutputStream bos = null;
 
@@ -383,7 +387,7 @@ public final class AppClient implements OmmConsumerClient {
 			if (bos != null) try { bos.close(); } catch (IOException e) {}
 		}
 
-		return bos.toString();
+		return bos.toString(this._charSet);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -391,8 +395,9 @@ public final class AppClient implements OmmConsumerClient {
 	private void udpSend(String msg) {
 		DatagramSocket socket = null;
 		DatagramPacket packet = null;
-		byte[] buffer = msg.getBytes();
+		byte[] buffer = null;
 		try {
+			buffer = msg.getBytes(_charSet);
 			socket = new DatagramSocket();
 			packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(_udpHost), Integer.parseInt(_udpPort));
 			socket.send(packet);
