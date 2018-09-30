@@ -3,7 +3,9 @@ Main-Class: org.tain.runjar.RunJarLoader
 Class-Path: ./
 Title: Kiea Thomson
 Version: ver 1.0
+Build-Jdk: 1.8.0_152
 Package: org.tain.runjar
+Created-Date: 2018.09.30
 Created-By: TAIN, Inc.
 Company: TAIN, Inc.
 Author: Kiea Seok Kang
