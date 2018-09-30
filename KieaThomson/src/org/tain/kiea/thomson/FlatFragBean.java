@@ -1,6 +1,5 @@
 package org.tain.kiea.thomson;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public final class FlatFragBean {
 	private Long totalSize;
 	private List<Long> sizes;
 	private List<String> fragNum;
-	private List<ByteBuffer> fragment;
+	private List<byte[]> fragment;
 
 	public FlatFragBean() {
 		this.guid = null;
@@ -29,7 +28,7 @@ public final class FlatFragBean {
 		this.totalSize = new Long(0);
 		this.sizes = new ArrayList<Long>();
 		this.fragNum = new ArrayList<String>();
-		this.fragment = new ArrayList<ByteBuffer>();
+		this.fragment = new ArrayList<byte[]>();
 	}
 
 	public String getGuid() {
@@ -92,10 +91,10 @@ public final class FlatFragBean {
 	public void setFragNum(List<String> fragNum) {
 		this.fragNum = fragNum;
 	}
-	public List<ByteBuffer> getFragment() {
+	public List<byte[]> getFragment() {
 		return fragment;
 	}
-	public void setFragment(List<ByteBuffer> fragment) {
+	public void setFragment(List<byte[]> fragment) {
 		this.fragment = fragment;
 	}
 
@@ -109,11 +108,21 @@ public final class FlatFragBean {
 		this.fragNum.add(fragNum);
 	}
 
-	public void addFragment(ByteBuffer fragment) {
+	public void addFragment(byte[] fragment) {
 		this.fragment.add(fragment);
 	}
 
 	//////////////////////////////////////////////////////////
+
+	public long sumSizes() {
+		long sumSizes = 0;
+
+		for (Long size : this.sizes) {
+			sumSizes += size;
+		}
+
+		return sumSizes;
+	}
 
 	public boolean isTotalSize() {
 		if (this.totalSize == 0)
@@ -122,15 +131,28 @@ public final class FlatFragBean {
 		if (this.sizes.size() == 0)
 			return false;
 
-		long sumSizes = 0;
-		for (Long size : this.sizes) {
-			sumSizes += size;
-		}
-
-		if (sumSizes == this.totalSize) {
+		if (sumSizes() == this.totalSize) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append(String.format("\t==> GUID       : %s%n", this.getGuid()));
+		sb.append(String.format("\t==> TIMACT_MS  : %s%n", this.getTimactMs()));
+		sb.append(String.format("\t==> ACTIV_DATE : %s%n", this.getActivDate()));
+		sb.append(String.format("\t==> MRN_TYPE   : %s%n", this.getMrnType()));
+		sb.append(String.format("\t==> MRN_V_MAJ  : %s%n", this.getMrnVerMajor()));
+		sb.append(String.format("\t==> MRN_V_MIN  : %s%n", this.getMrnVerMinor()));
+		sb.append(String.format("\t==> MRN_SRC    : %s%n", this.getMrnSrc()));
+		sb.append(String.format("\t==> TOT_SIZE   : %s%n", this.getTotalSize()));
+		sb.append(String.format("\t==> SIZES      : %s%n", this.getSizes()));
+		sb.append(String.format("\t==> FRAG_NUM   : %s%n", this.getFragNum()));
+		sb.append(String.format("\t==> sizable    : %s%n", this.isTotalSize()));
+
+		return sb.toString();
 	}
 }
