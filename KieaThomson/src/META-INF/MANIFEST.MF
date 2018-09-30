@@ -11,8 +11,23 @@ Comment: it's for you.
   .
 Rsrc-Main-Class: org.tain.kiea.thomson.KieaThomsonMain
 Rsrc-Class-Path: ./
+  lib/xpp3-1.1.4c.jar
+  lib/commons-logging-1.2.jar
+  lib/upaValueAdd-3.2.1.0.jar
+  lib/commons-configuration-1.10.jar
+  lib/json-20180813.jar
+  lib/jfxrt.jar
+  lib/upa-3.2.1.0.jar
+  lib/ema-3.2.1.0-javadoc.jar
+  lib/ema-3.2.1.0.jar
+  lib/commons-collections-3.2.2.jar
+  lib/upaValueAddCache-3.2.1.0.jar
+  lib/ansipage-3.2.1.0.jar
+  lib/slf4j-jdk14-1.7.12.jar
   lib/gson-2.7.jar
-
+  lib/jdacsUpalib.jar
+  lib/commons-lang-2.6.jar
+  lib/slf4j-api-1.7.12.jar
 
 
 
