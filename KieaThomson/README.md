@@ -192,7 +192,7 @@ Linux module
 
 	echo "----> the end."
 
-
+-----
 	#!/bin/bash
 	# =========================================================
 	# program: thomson.sh
