@@ -173,5 +173,9 @@ After unzip KieaThomson.jar, and run jar command.
 
 	DOS> jar -cvfm KieaThomson.jar KieaThomson/META-INF/MANIFEST.MF -C KieaThomson .
 
+-----
+Linux module
+
+
 
 .....
