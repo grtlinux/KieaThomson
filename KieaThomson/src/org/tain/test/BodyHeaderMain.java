@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.tain.utils.GsonUtils;
 
-public class AddJsonTestMain {
+public class BodyHeaderMain {
 
 	public static void main(String[] args) {
 

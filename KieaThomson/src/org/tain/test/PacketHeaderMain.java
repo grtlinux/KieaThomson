@@ -1,8 +1,9 @@
 package org.tain.test;
 
-public class HeaderMain {
+public class PacketHeaderMain {
 
 	public static void main(String[] args) {
+
 		byte[] header = {(byte)0x02, (byte)'R', (byte)'E', (byte)'U', (byte)'T' };
 
 		StringBuilder sb = new StringBuilder();
