@@ -64,15 +64,9 @@ public final class AppClient implements OmmConsumerClient {
 	private static Hashtable<String, FlatFragBean> mapFrag = new Hashtable<String, FlatFragBean>();
 
 	private Boolean _udpEnable;
-	private String _udpHost;
-	private String _udpPort;
-	private String _charSet;
 
 	public AppClient(Boolean _udpEnable, String _udpHost, String _udpPort) {
 		this._udpEnable = _udpEnable;
-		this._udpHost = _udpHost;
-		this._udpPort = _udpPort;
-		this._charSet = ResourcesUtils.getString("org.tain.kiea.thomson.charSet");
 	}
 
 	@Override
@@ -230,183 +224,30 @@ public final class AppClient implements OmmConsumerClient {
 		}
 
 		mapFrag.put(bean.getGuid(), bean);
-
-
 		if (flag) System.out.printf(">>>>> MESSAGE >>>>> mapFrag.size() = %d\n%s", mapFrag.size(), bean);
 
 		if (!bean.isTotalSize())
 			return;
 
+		String senderMessage = null;
+
 		if (flag) {
-			ByteArrayOutputStream bos = null;
-			String strMsg = null;
+			senderMessage = bean.getMessage();
+			if (flag) System.out.println("  => FRAGMENT JSON STRING: " + senderMessage);
 
-			try {
-				bos = new ByteArrayOutputStream();
-				List<byte[]> lstFragment = bean.getFragment();
-				for (byte[] fragment : lstFragment) {
-					bos.write(fragment);
-				}
-
-				strMsg = unzipPayload(bos.toByteArray());
-				if (flag) System.out.println("  => FRAGMENT JSON STRING: " + strMsg);
-
+			if (flag) {
 				// pretty-print json response
-				JSONObject jsonResponse = new JSONObject(strMsg);
+				JSONObject jsonResponse = new JSONObject(senderMessage);
 				int spacesToIndentEachLevel = 2;
 				if (flag) System.out.println("  => FRAGMENT JSON PRETTY:\n" + jsonResponse.toString(spacesToIndentEachLevel));
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				if (bos != null) try { bos.close(); } catch (Exception e) {}
-			}
-
-			if (flag && _udpEnable) {
-				// UDP send
-				udpSend(strMsg);
 			}
 		}
-	}
 
-	private void decode_old(FieldList fieldList, Object closuer) {
-		if (flag) System.out.println(">>>>> Decode fieldList: cnt = " + fieldList.size());
-
-		Iterator<FieldEntry> iter = fieldList.iterator();
-		FieldEntry fieldEntry;
-		String guid = null;
-		long totalSize = 0;
-
-		while (iter.hasNext()) {
-			fieldEntry = iter.next();
-			if (flag) System.out.printf("  FIELD_ENTRY: %d/%s/loadType(%d) %s%n"
-					, fieldEntry.fieldId()
-					, fieldEntry.name()
-					, fieldEntry.loadType()
-					, fieldEntry.load());
-
-			if (fieldEntry.loadType() == DataTypes.BUFFER) {
-				if (fieldEntry.fieldId() == FRAGMENT) {
-					if (flag) System.out.println("  => FRAGMENT JSON zipped SIZE: " + fieldEntry.buffer().buffer().limit());
-
-					if (totalSize == 0) {
-						// not a first segment
-						totalSize = totalSizes.get(guid).longValue();
-					}
-
-					if (fieldEntry.buffer().buffer().limit() == totalSize) {
-						// there is only one segment, we are ready unzip using gzip
-						String strFlatFrag = null;
-						try {
-							strFlatFrag = unzipPayload(Arrays.copyOf(fieldEntry.buffer().buffer().array(), fieldEntry.buffer().buffer().limit()));
-							if (flag) System.out.println("  => FRAGMENT JSON STRING: " + strFlatFrag);
-							// pretty-print json response
-							JSONObject jsonResponse = new JSONObject(strFlatFrag);
-							int spacesToIndentEachLevel = 2;
-							if (flag) System.out.println("  => FRAGMENT JSON PRETTY:\n" + jsonResponse.toString(spacesToIndentEachLevel));
-						} catch (Exception e) {
-							System.err.println("Exception parsing json: " + e);
-							e.printStackTrace(System.err);
-						}
-
-						if (flag) udpSend(strFlatFrag);
-					} else {
-						List<ByteBuffer> alFrags = null;
-						if (!fragBuilderHash.containsKey(guid)) {
-							// no hash key
-							alFrags = new ArrayList<ByteBuffer>();
-							alFrags.add(fieldEntry.buffer().buffer());
-							fragBuilderHash.put(guid, alFrags);
-						} else {
-							// exist hash key
-							alFrags = fragBuilderHash.get(guid);
-							alFrags.add(fieldEntry.buffer().buffer());
-
-							int sizeNow = 0;
-							for (int i=0; i < alFrags.size(); i++) {
-								sizeNow += alFrags.get(i).limit();
-							}
-
-							if (sizeNow < totalSize) {
-								fragBuilderHash.put(guid, alFrags);
-							} else {
-								// we are ready
-								ByteArrayOutputStream bos = null;
-								String strFlatFrag = null;
-
-								try {
-									bos = new ByteArrayOutputStream();
-									for (int i=0; i < alFrags.size(); i++) {
-										bos.write(Arrays.copyOf(alFrags.get(i).array(), alFrags.get(i).limit()));
-									}
-									strFlatFrag = unzipPayload(bos.toByteArray());
-									if (flag) System.out.println("  => FRAGMENT JSON STRING: " + strFlatFrag);
-
-									// pretty-print json response
-									JSONObject jsonResponse = new JSONObject(strFlatFrag);
-									int spacesToIndentEachLevel = 2;
-									if (flag) System.out.println("  => FRAGMENT JSON PRETTY:\n" + jsonResponse.toString(spacesToIndentEachLevel));
-								} catch (Exception e) {
-									e.printStackTrace();
-								} finally {
-									if (bos != null) try { bos.close(); } catch (Exception e) {}
-								}
-
-								if (flag) udpSend(strFlatFrag);
-							}
-						}
-					}
-				}
-			} else if (fieldEntry.fieldId() == TOT_SIZE) {
-				totalSize = fieldEntry.uintValue();
-			} else if (fieldEntry.fieldId() == GUID) {
-				guid = fieldEntry.rmtes().toString();
-				if (totalSize != 0)
-					totalSizes.put(guid, new Long(totalSize));
+		if (flag) {
+			// UdpSender
+			if (flag && _udpEnable && senderMessage != null) {
+				UdpSender.send(senderMessage);
 			}
 		}
-	}
-
-	private String unzipPayload(byte[] bytes) throws Exception {
-		ByteArrayInputStream bis = null;
-		ByteArrayOutputStream bos = null;
-
-		try {
-			bis = new ByteArrayInputStream(bytes);
-			bos = new ByteArrayOutputStream();
-
-			GZIPInputStream gis = new GZIPInputStream(bis);
-			byte[] buffer = new byte[bytes.length + 1];
-			int len = -1;
-			while ((len = gis.read(buffer, 0, bytes.length + 1)) != -1) {
-				bos.write(buffer, 0, len);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (bis != null) try { bis.close(); } catch (IOException e) {}
-			if (bos != null) try { bos.close(); } catch (IOException e) {}
-		}
-
-		return bos.toString(this._charSet);
-	}
-
-	///////////////////////////////////////////////////////////////////////////
-
-	private void udpSend(String msg) {
-		DatagramSocket socket = null;
-		DatagramPacket packet = null;
-		byte[] buffer = null;
-		try {
-			buffer = msg.getBytes(_charSet);
-			socket = new DatagramSocket();
-			packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(_udpHost), Integer.parseInt(_udpPort));
-			socket.send(packet);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (socket != null) try { socket.close(); } catch (Exception e) {}
-		}
-
-		if (flag) System.out.printf(">>>>> udpSend%n");
 	}
 }

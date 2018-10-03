@@ -260,7 +260,7 @@ Linux module
 			echo "  START: be starting..."
 			cd $JOB_HOME
 			./kieaLoop.sh > ./out &
-			#java -jar KieaThomson.jar > /dev/null &
+			#java -jar KieaThomson.jar > /dev/null 2>&1 &
 			sleep 2
 			PID=`ps -ef | grep $JOB_PROG | grep -v grep | awk '{print $2}'`
 			echo "  START: be started. PID=$PID."

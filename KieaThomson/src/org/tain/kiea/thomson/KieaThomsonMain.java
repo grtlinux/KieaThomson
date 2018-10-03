@@ -19,7 +19,7 @@ public class KieaThomsonMain {
 		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
 
 		if (!flag) test01(args);
-		if (flag) test02(args);
+		if (flag) test02(args);   // new MRNConsumer(args);
 	}
 
 	private static void test01(String[] args) throws Exception {

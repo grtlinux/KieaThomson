@@ -1,9 +1,17 @@
 package org.tain.kiea.thomson;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
+
+import org.tain.utils.ResourcesUtils;
 
 public final class FlatFragBean {
+
+	private String _charSet;
 
 	private String guid;
 	private String timactMs;
@@ -18,6 +26,8 @@ public final class FlatFragBean {
 	private List<byte[]> fragment;
 
 	public FlatFragBean() {
+		this._charSet = ResourcesUtils.getString("org.tain.kiea.thomson.charSet");
+
 		this.guid = null;
 		this.timactMs = null;
 		this.activDate = null;
@@ -152,7 +162,81 @@ public final class FlatFragBean {
 		sb.append(String.format("\t==> SIZES      : %s%n", this.getSizes()));
 		sb.append(String.format("\t==> FRAG_NUM   : %s%n", this.getFragNum()));
 		sb.append(String.format("\t==> sizable    : %s%n", this.isTotalSize()));
+		sb.append(String.format("\t==> charSet    : %s%n", this._charSet));
 
 		return sb.toString();
+	}
+
+	public String getBodyHeaderJson() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("{");
+		sb.append(String.format("\"%s\":\"%s\",", "GUID", this.getGuid()));
+		sb.append(String.format("\"%s\":\"%s\",", "TIMACT_MS", this.getTimactMs()));
+		sb.append(String.format("\"%s\":\"%s\",", "ACTIV_DATE", this.getActivDate()));
+		sb.append(String.format("\"%s\":\"%s\",", "MRN_TYPE", this.getMrnType()));
+		sb.append(String.format("\"%s\":\"%s\",", "MRN_V_MAJ", this.getMrnVerMajor()));
+		sb.append(String.format("\"%s\":\"%s\",", "MRN_V_MIN", this.getMrnVerMinor()));
+		sb.append(String.format("\"%s\":\"%s\",", "MRN_SRC", this.getMrnSrc()));
+		sb.append(String.format("\"%s\":\"%s\",", "TOT_SIZE", this.getTotalSize()));
+		sb.append(String.format("\"%s\":\"%s\",", "charSet", this._charSet));
+		sb.append(String.format("\"%s\":%s,"    , "SIZES", this.getSizes()));
+		sb.append(String.format("\"%s\":%s,"    , "FRAG_NUM", this.getFragNum()));
+
+		return sb.toString();
+	}
+
+	public String getMessage() {
+		ByteArrayOutputStream bos = null;
+		String retMsg = null;
+
+		try {
+			bos = new ByteArrayOutputStream();
+			List<byte[]> lstFragment = this.getFragment();
+			for (byte[] fragment : lstFragment) {
+				bos.write(fragment);
+			}
+
+			retMsg = unzipPayload(bos.toByteArray());
+			retMsg = retMsg.replaceFirst("\\{", this.getBodyHeaderJson());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (bos != null) try { bos.close(); } catch (Exception e) {}
+		}
+
+		return retMsg;
+	}
+
+	private String unzipPayload(byte[] bytes) throws Exception {
+		ByteArrayInputStream bis = null;
+		ByteArrayOutputStream bos = null;
+
+		try {
+			bis = new ByteArrayInputStream(bytes);
+			bos = new ByteArrayOutputStream();
+
+			GZIPInputStream gis = new GZIPInputStream(bis);
+			byte[] buffer = new byte[bytes.length + 1];
+			int len = -1;
+			while ((len = gis.read(buffer, 0, bytes.length + 1)) != -1) {
+				bos.write(buffer, 0, len);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (bis != null) try { bis.close(); } catch (IOException e) {}
+			if (bos != null) try { bos.close(); } catch (IOException e) {}
+		}
+
+		return bos.toString(this._charSet);
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+
+
+	public byte[] getPacketHeader() {
+		byte[] packetHeader = {(byte)0x02, (byte)'R', (byte)'E', (byte)'U', (byte)'T' };
+		return packetHeader;
 	}
 }

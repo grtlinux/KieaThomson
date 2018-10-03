@@ -3,11 +3,21 @@ package org.tain.test;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.tain.utils.ClassUtils;
 import org.tain.utils.GsonUtils;
 
 public class BodyHeaderMain {
 
+	private static final boolean flag = true;
+
 	public static void main(String[] args) {
+		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
+
+		if (flag) test01(args);
+	}
+
+	private static void test01(String[] args) {
+		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
 
 		Map<String, Object> mapTest = new HashMap<String, Object>();
 		mapTest.put("id", 123);
