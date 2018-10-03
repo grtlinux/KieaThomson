@@ -1,21 +1,15 @@
 package org.tain.kiea.thomson;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
+import java.util.Locale;
 
 import org.json.JSONObject;
-import org.tain.utils.ResourcesUtils;
 
 import com.thomsonreuters.ema.access.AckMsg;
 import com.thomsonreuters.ema.access.DataType;
@@ -178,10 +172,26 @@ public final class AppClient implements OmmConsumerClient {
 
 			switch (fieldEntry.fieldId()) {
 			case TIMACT_MS:
-				bean.setTimactMs(String.valueOf(fieldEntry.load()));
+				if (!flag) {
+					bean.setTimactMs(String.valueOf(fieldEntry.load()));
+				} else {
+					String time = new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(Long.valueOf(String.valueOf(fieldEntry.load()))));
+					bean.setTimactMs(time);
+				}
 				break;
 			case ACTIV_DATE:
-				bean.setActivDate(String.valueOf(fieldEntry.load()));
+				if (!flag) {
+					bean.setActivDate(String.valueOf(fieldEntry.load()));
+				} else {
+					Date date = null;
+					try {
+						date = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).parse(String.valueOf(fieldEntry.load()));
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+					bean.setActivDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
+				}
 				break;
 			case MRN_TYPE:
 				bean.setMrnType(String.valueOf(fieldEntry.load()));

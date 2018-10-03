@@ -1,18 +1,24 @@
 package org.tain.test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import org.tain.utils.ClassUtils;
 
 public class PrintTagMain {
 
 	private static final boolean flag = true;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
 
 		if (flag) printBody(args);
+		if (flag) printTimactMs(args);
+		if (flag) printActivDate(args);
 	}
 
-	private static void printBody(String[] args) {
+	private static void printBody(String[] args) throws Exception {
 		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
 
 		String body = "Singapore (Platts)--2Oct2018/1010 pm EDT/210 GMT\n\n-------------------------Cash Brent-----------------------NYMEX WTI--"
@@ -24,5 +30,26 @@ public class PrintTagMain {
 				+ "-----------------------------------------------\n\nIndex of Platts EMEA Crude pages found on PGA1200\n \n\n--Platts Global Alert--\n";
 
 		System.out.println(body);
+	}
+
+	private static void printTimactMs(String[] args) throws Exception {
+		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
+
+		String timactMs = "9926904";
+
+		SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date(Long.parseLong(timactMs));
+
+		System.out.println(">>>>> " + formater.format(date));
+	}
+
+	private static void printActivDate(String[] args) throws Exception {
+		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
+
+		String activeDate = "03 OCT 2018";
+		Date date = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).parse(activeDate);
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+
+		System.out.println(">>>>> " + formater.format(date));
 	}
 }
