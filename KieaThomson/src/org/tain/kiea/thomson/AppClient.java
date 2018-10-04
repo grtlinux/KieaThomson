@@ -284,7 +284,7 @@ public final class AppClient implements OmmConsumerClient {
 
 		if (flag) {
 			// MySQL
-			if (flag && _udpEnable && senderMessage != null) {
+			if (flag && _mysqlEnable && senderMessage != null) {
 				// MySQL insert Message
 				InsertDb.insertMessage(bean.getGuid(), senderMessage);
 			}

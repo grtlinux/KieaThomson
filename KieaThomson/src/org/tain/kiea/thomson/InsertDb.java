@@ -79,10 +79,12 @@ public class InsertDb {
 			return -1;
 		}
 
-		int length = message.length();
+		int length = 0;
 		int retValue = -1;
 
 		try {
+			length = message.getBytes(_charSet).length;
+
 			_pstmt.setString(1, guid);
 			_pstmt.setInt   (2, length);
 			_pstmt.setString(3, message);
@@ -98,7 +100,7 @@ public class InsertDb {
 			e.printStackTrace();
 		}
 
-		if (flag) System.out.printf("MySQL => GUID='%s', SIZE=%d %n", guid, length);
+		if (flag) System.out.printf(">>>>> MySQL => GUID='%s', SIZE=%d %n", guid, length);
 
 		return retValue;
 	}
