@@ -256,7 +256,8 @@ public final class AppClient implements OmmConsumerClient {
 		if (flag) {
 			// UdpSender
 			if (flag && _udpEnable && senderMessage != null) {
-				UdpSender.send(senderMessage);
+				//UdpSender.send(senderMessage);
+				UdpSender.send(bean.getGuid(), senderMessage);
 			}
 		}
 	}
