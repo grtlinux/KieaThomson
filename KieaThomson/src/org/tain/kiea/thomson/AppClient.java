@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONObject;
+import org.tain.utils.ResourcesUtils;
 
 import com.thomsonreuters.ema.access.AckMsg;
 import com.thomsonreuters.ema.access.DataType;
@@ -58,9 +59,29 @@ public final class AppClient implements OmmConsumerClient {
 	private static Hashtable<String, FlatFragBean> mapFrag = new Hashtable<String, FlatFragBean>();
 
 	private Boolean _udpEnable;
+	private Boolean _mysqlEnable;
 
-	public AppClient(Boolean _udpEnable, String _udpHost, String _udpPort) {
-		this._udpEnable = _udpEnable;
+	public AppClient() {
+		this._udpEnable = Boolean.valueOf(ResourcesUtils.getString("org.tain.kiea.thomson.udp.enable"));
+		this._mysqlEnable = Boolean.valueOf(ResourcesUtils.getString("org.tain.kiea.thomson.mysql.enable"));
+
+		if (flag) {
+			if (this._udpEnable) {
+				System.out.println(">>> INFO: udp send is OK!!");
+				new UdpSender();
+			} else {
+				System.out.println(">>> INFO: udp send is not doing..");
+			}
+		}
+
+		if (flag) {
+			if (this._mysqlEnable) {
+				System.out.println(">>> INFO: use MySQL DB!!");
+				new InsertDb();
+			} else {
+				System.out.println(">>> INFO: don't use MySQL DB!!");
+			}
+		}
 	}
 
 	@Override
@@ -258,6 +279,14 @@ public final class AppClient implements OmmConsumerClient {
 			if (flag && _udpEnable && senderMessage != null) {
 				//UdpSender.send(senderMessage);
 				UdpSender.send(bean.getGuid(), senderMessage);
+			}
+		}
+
+		if (flag) {
+			// MySQL
+			if (flag && _udpEnable && senderMessage != null) {
+				// MySQL insert Message
+				InsertDb.insertMessage(bean.getGuid(), senderMessage);
 			}
 		}
 	}

@@ -24,7 +24,16 @@ public class UdpSender {
 		_charSet = ResourcesUtils.getString("org.tain.kiea.thomson.charSet");
 
 		_fragSize = Integer.valueOf(ResourcesUtils.getString("org.tain.kiea.thomson.udp.maxSize"));
+
+		if (flag) {
+			System.out.printf(">>>>> UdpSender._udpHost  = %s%n", _udpHost);
+			System.out.printf(">>>>> UdpSender._udpPort  = %s%n", _udpPort);
+			System.out.printf(">>>>> UdpSender._charSet  = %s%n", _charSet);
+			System.out.printf(">>>>> UdpSender._fragSize = %s%n", _fragSize);
+		}
 	}
+
+	public UdpSender() {}
 
 	///////////////////////////////////////////////////////////////////////////
 
@@ -107,7 +116,7 @@ public class UdpSender {
 			if (socket != null) try { socket.close(); } catch (Exception e) {}
 		}
 
-		if (flag) System.out.printf(">>>>> UdpSender.send(): length = %d%n", buffer.length);
+		if (flag) System.out.printf(">>>>> Udp.send() => length = %d%n", buffer.length);
 		if (flag) {
 			StringBuilder sb = new StringBuilder();
 			int sizHeader = reutHeader.length + guidHeader.length;

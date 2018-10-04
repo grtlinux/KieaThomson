@@ -235,7 +235,7 @@ public final class FlatFragBean {
 	///////////////////////////////////////////////////////////////////////////
 
 
-	public byte[] getPacketHeader() {
+	public byte[] _getPacketHeader() {
 		byte[] packetHeader = {(byte)0x02, (byte)'R', (byte)'E', (byte)'U', (byte)'T' };
 		return packetHeader;
 	}
