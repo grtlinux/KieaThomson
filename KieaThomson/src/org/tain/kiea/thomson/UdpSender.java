@@ -116,7 +116,7 @@ public class UdpSender {
 			if (socket != null) try { socket.close(); } catch (Exception e) {}
 		}
 
-		if (flag) System.out.printf(">>>>> Udp.send() => length = %d%n", buffer.length);
+		if (flag) System.out.printf(">>>>> Udp.send() --> length = %d%n", buffer.length);
 		if (flag) {
 			StringBuilder sb = new StringBuilder();
 			int sizHeader = reutHeader.length + guidHeader.length + 18;
@@ -128,7 +128,7 @@ public class UdpSender {
 				}
 			}
 
-			System.out.printf(">>>>> Udp.message(70=5+55+5+5) => \"%s...\"%n", sb.toString());
+			System.out.printf(">>>>> Udp.message(70=5+55+5+5) --> \"%s...\"%n", sb.toString());
 		}
 	}
 }

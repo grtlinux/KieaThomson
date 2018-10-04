@@ -100,7 +100,7 @@ public class InsertDb {
 			e.printStackTrace();
 		}
 
-		if (flag) System.out.printf(">>>>> MySQL => GUID='%s', SIZE=%d %n", guid, length);
+		if (flag) System.out.printf(">>>>> MySQL --> GUID = '%s', SIZE = %d %n", guid, length);
 
 		return retValue;
 	}
