@@ -56,6 +56,7 @@ public class InsertDb {
 					Class.forName(_jdbcDriver);
 					_conn = DriverManager.getConnection(_dbUrl, _user, _pass);
 					_pstmt = _conn.prepareStatement(_sql);
+					_conn.setAutoCommit(false);
 					System.out.println(">>>>> MySQL Connection is OK!!!!!");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -90,6 +91,8 @@ public class InsertDb {
 			_pstmt.setString(3, message);
 
 			retValue = _pstmt.executeUpdate();
+
+			_conn.commit();
 		} catch (SQLException e) {
 			if (_conn != null) try { _conn.rollback(); } catch (Exception e2) {}
 			_conn = null;

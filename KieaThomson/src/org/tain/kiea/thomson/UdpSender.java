@@ -119,7 +119,7 @@ public class UdpSender {
 		if (flag) System.out.printf(">>>>> Udp.send() --> length = %d%n", buffer.length);
 		if (flag) {
 			StringBuilder sb = new StringBuilder();
-			int sizHeader = reutHeader.length + guidHeader.length + 18; // 18 some of body
+			int sizHeader = reutHeader.length + guidHeader.length + 15; // 18 some of body
 			for (int i=0; i < sizHeader; i++) {
 				if (i == 0) {
 					sb.append(String.format("[0x%02X]", buffer[i]));
