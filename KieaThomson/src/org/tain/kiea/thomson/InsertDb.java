@@ -3,7 +3,12 @@ package org.tain.kiea.thomson;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.tain.utils.ClassUtils;
 import org.tain.utils.ResourcesUtils;
@@ -113,8 +118,67 @@ public class InsertDb {
 	public static void main(String[] args) throws Exception {
 		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
 
+		if (flag) select01(args);  // select
 		if (!flag) insertTest01(args);   // insert a sample data
 		if (!flag) delete01(args);   // delete the articles in table Thomson
+	}
+
+	private static void select01(String[] args) throws Exception {
+		if (flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
+
+		List<Map<String, Object>> list = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(_jdbcDriver);
+			conn = DriverManager.getConnection(_dbUrl, _user, _pass);
+			conn.setAutoCommit(false);
+
+			list = new ArrayList<Map<String, Object>>();
+
+			String sql = ""
+					+ "select"
+					+ "    ID"
+					+ "    , GUID"
+					+ "    , SIZE"
+					+ "    , MESSAGE"
+					+ " from"
+					+ "    THOMSON"
+					+ " where 1=1"
+					+ "    and SIZE > ?"
+					+ "";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, 50000);
+
+			resultSet = pstmt.executeQuery();
+			while (resultSet.next()) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("id", resultSet.getLong("ID"));
+				map.put("guid", resultSet.getString("GUID"));
+				map.put("size", resultSet.getInt("SIZE"));
+				map.put("message", resultSet.getString("MESSAGE"));
+				list.add(map);
+			}
+
+			if (flag) System.out.printf(">>>>> list.size() = %d%n", list.size());
+
+			if (flag)
+				conn.commit();
+			else
+				conn.rollback();
+		} catch (SQLException e) {
+			if (conn != null) try { conn.rollback(); } catch (Exception e2) {}
+			e.printStackTrace();
+		} catch (Exception e) {
+			if (conn != null) try { conn.rollback(); } catch (Exception e2) {}
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {}
+			if (conn != null) try { conn.close(); } catch (Exception e) {}
+		}
 	}
 
 	private static void insertTest01(String[] args) throws Exception {
