@@ -119,7 +119,7 @@ public class UdpSender {
 		if (flag) System.out.printf(">>>>> Udp.send() --> length = %d%n", buffer.length);
 		if (flag) {
 			StringBuilder sb = new StringBuilder();
-			int sizHeader = reutHeader.length + guidHeader.length + 15; // 18 some of body
+			int sizHeader = reutHeader.length + guidHeader.length;
 			for (int i=0; i < sizHeader; i++) {
 				if (i == 0) {
 					sb.append(String.format("[0x%02X]", buffer[i]));
@@ -128,7 +128,7 @@ public class UdpSender {
 				}
 			}
 
-			System.out.printf(">>>>> Udp.message --> (70=5+55+5+5) \"%s...\"%n", sb.toString());
+			System.out.printf(">>>>> Udp.message --> (70=5+55+5+5)      \"%s...\"%n", sb.toString());
 		}
 	}
 }
