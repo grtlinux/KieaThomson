@@ -5,6 +5,26 @@ import java.util.ResourceBundle;
 import org.tain.utils.ClassUtils;
 import org.tain.utils.ResourcesUtils;
 
+/**
+ * Project: Reuter Bridge on Kiea Thomson module
+ *
+ * @author KangSeok_Mac
+ *
+ * Windows Commands :
+ *     DOS> set JAVA_HOME=C:/tain/java/jdk1.8.0_152
+ *     DOS> set PATH=%JAVA_HOME%/bin;%PATH%
+ *     DOS> java -version
+ *
+ *     DOS> javac -cp ".;out/lib/*" -d out src/org/tain/runjar/*.java src/org/tain/test/*.java src/org/tain/utils/*.java src/com/thomsonreuters/ema/examples/mrn/*.java src/org/tain/kiea/thomson/*.java
+ *     DOS> jar -cvfm KieaThomson.jar src/META-INF/MANIFEST.MF -C out .
+ *     DOS> jar -cvfm thomson-1.0.jar src/META-INF/MANIFEST.MF -C out .
+ *     DOS> tree /f /a
+ *
+ *     DOS> java -jar KieaThomson.jar
+ *
+ *
+ *
+ */
 public class KieaThomsonMain {
 
 	private static final boolean flag;

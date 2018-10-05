@@ -30,6 +30,8 @@ Rsrc-Class-Path: ./
   lib/jdacsUpalib.jar
   lib/commons-lang-2.6.jar
   lib/slf4j-api-1.7.12.jar
+  lib/mysql-connector-java-5.1.11-bin.jar
+  
 
 
 

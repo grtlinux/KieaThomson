@@ -45,13 +45,13 @@ public class InsertDb {
 				try {
 					_sql = "insert into THOMSON"
 							+ " ("
-							+ "  GUID"
-							+ ", SIZE"
-							+ ", MESSAGE"
+							+ "    GUID"
+							+ ",   SIZE"
+							+ ",   MESSAGE"
 							+ " ) values ("
-							+ "  ?"    // GUID varchar(100)
-							+ ", ?"    // SIZE int(11)
-							+ ", ?"    // MESSAGE mediumtext
+							+ "    ?"    // GUID varchar(100)
+							+ ",   ?"    // SIZE int(11)
+							+ ",   ?"    // MESSAGE mediumtext
 							+ ")";
 					Class.forName(_jdbcDriver);
 					_conn = DriverManager.getConnection(_dbUrl, _user, _pass);
@@ -100,7 +100,7 @@ public class InsertDb {
 			e.printStackTrace();
 		}
 
-		if (flag) System.out.printf(">>>>> MySQL --> GUID = '%s', SIZE = %d %n", guid, length);
+		if (flag) System.out.printf(">>>>> MySQL.insertMessage() --> GUID = '%s', SIZE = %d %n", guid, length);
 
 		return retValue;
 	}
