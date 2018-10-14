@@ -9,6 +9,8 @@ CREATE TABLE `tain`.`thomson` (
 
 select count(*) from thomson;
 
+select message from thomson;
+
 select * from thomson where size > 64000;
 
 select * from thomson where size > 100000;
