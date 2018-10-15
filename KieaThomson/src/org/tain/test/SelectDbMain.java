@@ -64,7 +64,7 @@ public class SelectDbMain {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://192.168.2.13:3306/tain", "root", "toor");
+			conn = DriverManager.getConnection("jdbc:mysql://192.168.1.13:3306/tain", "root", "toor");
 			conn.setAutoCommit(false);
 
 			list = new ArrayList<Map<String, Object>>();
@@ -124,7 +124,7 @@ public class SelectDbMain {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://192.168.2.13:3306/tain", "root", "toor");
+			conn = DriverManager.getConnection("jdbc:mysql://192.168.1.13:3306/tain", "root", "toor");
 			conn.setAutoCommit(false);
 
 			list = new ArrayList<Map<String, Object>>();
