@@ -293,9 +293,10 @@ public final class AppClient implements OmmConsumerClient {
 		if (flag) {
 			// TODO KANG-20181018: delete guid content in mapFrag
 			mapFrag.remove(bean.getGuid());
-			if (flag) System.out.printf(">>>>> mapFrag.remove(\"%s\") -> mapFrag.size()=%d%n"
+			if (flag) System.out.printf(">>>>> mapFrag.size()=%d -----------> mapFrag.remove(\"%s\")%n"
+					, mapFrag.size()
 					, bean.getGuid()
-					, mapFrag.size());
+					);
 		}
 	}
 }

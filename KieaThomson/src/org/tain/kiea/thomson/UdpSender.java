@@ -128,7 +128,11 @@ public class UdpSender {
 				}
 			}
 
-			System.out.printf(">>>>> Udp.message --> (70=5+55+5+5)      \"%s...\"%n", sb.toString());
+			System.out.printf(">>>>> Udp.message --> (70=5+55+5+5) \"%s%s\" + \"%s...\"%n"
+					, sb.substring(0, 6)      // [0x02]
+					, sb.substring(6, 10)     // REUT
+					, sb.substring(10)        // guid ~
+					);
 		}
 	}
 }
