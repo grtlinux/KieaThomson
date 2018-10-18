@@ -11,6 +11,8 @@ select count(*) from thomson;
 
 select * from thomson order by id desc;
 
+select * from thomson where id >= 90828 and id <= 90845;
+
 select message from thomson;
 
 select * from thomson where size > 64000;
