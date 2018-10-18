@@ -81,7 +81,7 @@ This project is for Thomson.
 
 The below sources is version up sources with RunJar module...
 
-	DOS> javac -cp ".;out/lib/*" -d out src/org/tain/kiea/thomson/*.java src/org/tain/runjar/*.java src/org/tain/test/*.java src/org/tain/utils/*.java src/com/thomsonreuters/ema/examples/mrn/*.java
+	DOS> javac -cp ".;out/lib/*" -d out src/org/tain/kiea/services/*.java src/org/tain/kiea/thomson/*.java src/org/tain/runjar/*.java src/org/tain/test/*.java src/org/tain/utils/*.java src/com/thomsonreuters/ema/examples/mrn/*.java
 
 	DOS> jar -cvfm KieaThomson.jar src/META-INF/MANIFEST.MF -C out .
 
