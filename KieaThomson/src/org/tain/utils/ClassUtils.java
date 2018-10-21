@@ -55,6 +55,12 @@ public final class ClassUtils {
 		if (flag) sb.append("lineNo: ").append(e.getLineNumber());
 		return sb.toString();
 	}
+	
+	public static String getFileLine() {
+		final StackTraceElement e = Thread.currentThread().getStackTrace()[2];
+
+		return String.format("%s(%d)", e.getFileName(), e.getLineNumber());
+	}
 
 	///////////////////////////////////////////////////////////////////////////
 }
