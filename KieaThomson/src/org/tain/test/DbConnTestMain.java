@@ -19,7 +19,8 @@ public class DbConnTestMain {
 	
 	static {
 		flag = true;
-		log = LoggerFactory.getLogger(new Object() {}.getClass().getEnclosingClass());
+		//log = LoggerFactory.getLogger(new Object() {}.getClass().getEnclosingClass());
+		log = LoggerFactory.getLogger(DbConnTestMain.class);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
