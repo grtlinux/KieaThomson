@@ -206,7 +206,6 @@ public final class RunJarLoader {
 		}
 		
 		if (flag) {
-			metaLib = "META-INF/lib";
 			Enumeration<URL> urls = Thread.currentThread().getContextClassLoader().getResources(metaLib);
 			while (urls.hasMoreElements()) {
 				URL url = (URL) urls.nextElement();
@@ -241,8 +240,9 @@ public final class RunJarLoader {
 			lstUrl.add(new URL("rsrc:./"));
 
 			for (String subJar : lstSubJar) {
-				String rsrc = String.format("jar:rsrc:%s/%s!/", metaLib, subJar);
-				if (flag) System.out.printf(">>>>> %s%n", rsrc);
+				// String rsrc = String.format("jar:rsrc:%s/%s!/", metaLib, subJar);
+				String rsrc = String.format("jar:rsrc:%s!/", subJar);
+				if (!flag) System.out.printf(">>>>> %s%n", rsrc);
 				
 				lstUrl.add(new URL(rsrc));
 			}
@@ -268,7 +268,7 @@ public final class RunJarLoader {
 	public static void main(String[] args) throws Exception {
 		if (!flag) System.out.println(">>>>> " + ClassUtils.getClassInfo());
 
-		if (flag) {
+		if (!flag) {
 			// test for arguments
 			args = new String[] {};
 			args = new String[] { "default", };
