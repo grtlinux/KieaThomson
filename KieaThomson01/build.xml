@@ -120,6 +120,20 @@
 		</java>
 	</target>
 	
+	<!-- run.jar3 -->
+	<target name="run.jar3" depends="make.jar" description="run jar file - 3">
+		<echo>Run Jar File - test03</echo>
+		<java
+			dir="${base.dir}"
+			jar="${target.jar}"
+			fork="true"
+			failonerror="true"
+			maxmemory="128m">
+			<jvmarg value="-Dfile.encoding=UTF-8"/>
+			<arg value="test03"/>
+		</java>
+	</target>
+	
 	<!-- clean -->
 	<target name="clean" depends="delete.dir" description="clean project">
 		<echo>Clean Project for Start</echo>

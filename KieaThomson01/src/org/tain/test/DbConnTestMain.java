@@ -23,7 +23,7 @@ public class DbConnTestMain {
 		log = LoggerFactory.getLogger(DbConnTestMain.class);
 	}
 	
-	///////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////4f//////////////////////////////////
 	
 	public static void main(String[] args) throws Exception {
 		if (flag) log.info("INFO: {}", ClassUtils.getFileLine());
