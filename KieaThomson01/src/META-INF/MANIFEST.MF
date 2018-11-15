@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Title: RunJar
+Version: ver 4.0
+Package: org.tain.runjar
+Created-By: TAIN, Inc.
+Company: TAIN, Inc.
+Author: Kiea Seok Kang
+Comment: it's for you.
+Main-Class: org.tain.runjar.RunJarLoader
+Class-Path: .
+
+
+
+

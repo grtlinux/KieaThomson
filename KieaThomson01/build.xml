@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<project name="RunJar05" basedir="." default="make.jar">
+	<property name="target.jar" value="RunJar05.jar"/>
+	<property name="base.dir" value="."/>
+	<property name="src.dir" value="src"/>
+	<property name="lib.dir" value="src/META-INF/lib"/>
+	<property name="classes.dir" value="classes"/>
+	<property name="java.encoding" value="UTF-8"/>
+	<property name="manifest.file" value="src/META-INF/MANIFEST.MF"/>
+
+	<!-- jar.files -->
+	<path id="jar.files">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<!-- delete.target.file -->
+	<target name="delete.target.file" description="delete target file">
+		<echo>Delete Target File</echo>
+		<delete file="${target.jar}"/>
+	</target>
+	
+	<!-- delete.dir -->
+	<target name="delete.dir" depends="delete.target.file" description="delete folder">
+		<echo>Delete Folder</echo>
+		<delete dir="${classes.dir}"/>
+	</target>
+	
+	<!-- mkdir.dir -->
+	<target name="mkdir.dir" depends="delete.dir" description="mkdir folder">
+		<echo>Make Folder</echo>
+		<mkdir dir="${classes.dir}"/>
+	</target>
+	
+	<!-- init -->
+	<target name="init" depends="delete.dir, mkdir.dir" description="initialization">
+		<echo>Initializing</echo>
+	</target>
+	
+	<!-- compile -->
+	<target name="compile" depends="init" description="compile">
+		<echo>Compiling</echo>
+		<javac destdir="${classes.dir}" classpathref="jar.files" encoding="${java.encoding}" debug="on" debuglevel="lines,vars,source" includeantruntime="false">
+			<src path="${src.dir}"/>
+		</javac>
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.jar"/>
+				<include name="**/*.MF"/>
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- make.jar -->
+	<target name="make.jar" depends="compile" description="make target jar file">
+		<echo>Make Jar File</echo>
+		<jar destfile="${target.jar}">
+			<fileset dir="${classes.dir}" includes="**/*.*"/>
+			<!-- manifest file="${manifest.file}"/ -->
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0"/>
+				<attribute name="Title" value="RunJar"/>
+				<attribute name="Version" value="ver 4.0"/>
+				<attribute name="Package" value="org.tain.runjar"/>
+				<attribute name="Created-By" value="TAIN, Inc."/>
+				<attribute name="Company" value="TAIN, Inc."/>
+				<attribute name="Author" value="Kiea Seok Kang"/>
+				<attribute name="Comment" value="it's for you."/>
+				<attribute name="Main-Class" value="org.tain.runjar.RunJarLoader"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<!-- run.jar -->
+	<target name="run.jar" depends="make.jar" description="run jar file">
+		<echo>Run Jar File - Usage</echo>
+		<java
+			dir="${base.dir}"
+			jar="${target.jar}"
+			fork="true"
+			failonerror="true"
+			maxmemory="128m">
+			<jvmarg value="-Dfile.encoding=UTF-8"/>
+		</java>
+	</target>
+	
+	<!-- run.jar1 -->
+	<target name="run.jar1" depends="make.jar" description="run jar file - 1">
+		<echo>Run Jar File - test01</echo>
+		<java
+			dir="${base.dir}"
+			jar="${target.jar}"
+			fork="true"
+			failonerror="true"
+			maxmemory="128m">
+			<jvmarg value="-Dfile.encoding=UTF-8"/>
+			<arg value="test01"/>
+			<arg value="arg-1"/>
+			<arg value="arg-2"/>
+			<arg value="arg-3"/>
+		</java>
+	</target>
+	
+	<!-- run.jar2 -->
+	<target name="run.jar2" depends="make.jar" description="run jar file - 2">
+		<echo>Run Jar File - test02</echo>
+		<java
+			dir="${base.dir}"
+			jar="${target.jar}"
+			fork="true"
+			failonerror="true"
+			maxmemory="128m">
+			<jvmarg value="-Dfile.encoding=UTF-8"/>
+			<arg value="test02"/>
+			<arg value="arg-1"/>
+			<arg value="arg-2"/>
+		</java>
+	</target>
+	
+	<!-- clean -->
+	<target name="clean" depends="delete.dir" description="clean project">
+		<echo>Clean Project for Start</echo>
+	</target>
+</project>
+
+
+

@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<project name="ant" basedir="." default="idp_build">
+
+	<!-- ############################################################################## -->
+	<!-- 								property						   			    -->
+	<!-- ############################################################################## -->
+	<property file="build.properties" />
+
+	<!-- checkout project folder name -->
+	<property name="project_directory_idp" value="IDPWeb" />
+
+	<!-- SVN 체크아웃 디렉토리 -->
+	<property name="checkout_project_idp" value="${checkout.dir}/${project_directory_idp}" />
+
+	<!-- 배포될 디렉토리 -->
+	<property name="target_home_idp_dir" value="${webapp.home.dir}/${project_directory_idp}" />
+
+	<!-- ############################################################################## -->
+	<!-- 								CLASS PATH						   			    -->
+	<!-- ############################################################################## -->
+	<path id="ant_classpath">
+		<fileset dir="${ant.home.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="common_classpath">
+		<fileset dir="${catalina.home.dir}/lib">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${java.home.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="ant_classpath" />
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="ant_classpath" />
+
+	<!-- ############################################################################## -->
+	<!-- 								SVN TASK						   			    -->
+	<!-- ############################################################################## -->
+	<!-- 체크아웃 디렉토리 체크 -->
+	<target name="check_export_empty">
+		<available file="${checkout.dir}/${project_name}" property="svn_export.exists" />
+	</target>
+
+	<svnSetting id="svn.settings" javahl="false" svnkit="true" username="${svn.username}" password="${svn.password}" />
+
+	<!-- SVN 프로젝트 체크 아웃 -->
+	<target name="svn_checkout" depends="check_export_empty" unless="svn_export.exists">
+		<echo message="|-------------------------------------------------------------| " />
+		<echo message="| SVN CHECKOUT START                                          | " />
+		<echo message="|-------------------------------------------------------------| " />
+		<svn javahl="false" username="${svn.username}" password="${svn.password}">
+			<checkout url="${svn_repository_url}" revision="HEAD" destPath="${checkout.dir}/${project_name}" />
+		</svn>
+	</target>
+
+	<!-- SVN 업데이트 -->
+	<target name="svn_update" depends="check_export_empty" if="svn_export.exists">
+		<echo message="|-------------------------------------------------------------| " />
+		<echo message="| SVN UPDATE	START                                            | " />
+		<echo message="|-------------------------------------------------------------| " />
+		<svn javahl="false" username="${svn.username}" password="${svn.password}">
+			<update dir="${checkout.dir}/${project_name}" recurse="true" />
+		</svn>
+	</target>
+
+	<!-- get svn source -->
+	<target name="get_svn_source_idp">
+		<antcall target="svn_job_process">
+			<param name="svn_repository_url" value="${svn.repository.idp.url}" />
+			<param name="project_name" value="${project_directory_idp}" />
+		</antcall>
+	</target>
+
+	<!-- svn job -->
+	<target name="svn_job_process" depends="svn_checkout, svn_update" />
+
+	<!-- ############################################################################## -->
+	<!-- 							   POC BUILD START					   			    -->
+	<!-- ############################################################################## -->
+
+	<!-- IDP build task -->
+	<target name="idp_build">
+		<property name="project_home" value="${checkout_project_idp}" />
+		<property name="target_home_dir" value="${target_home_idp_dir}" />
+		<property name="app_classpath" value="${checkout_project_idp}" />
+
+		<antcall target="clean" />
+		<antcall target="get_svn_source_idp" />
+		<antcall target="build" />
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- 								    BUILD						   			    -->
+	<!-- ############################################################################## -->
+
+	<!-- src, classes 삭제 -->
+	<target name="clean">
+		<echo message="|-------------------------------------------------------------| " />
+		<echo message="${project_home}/src" />
+		<echo message="${target_home_dir}/WEB-INF/classes/com" />
+		<echo message="|-------------------------------------------------------------| " />
+
+		<delete dir="${project_home}/src" />
+		<delete dir="${target_home_dir}/WEB-INF/classes/com" />
+	</target>
+
+	<!-- 디렉토리 생성 -->
+	<target name="make_dir">
+		<mkdir dir="${target_home_dir}/WEB-INF/classes" />
+	</target>
+
+	<!-- java compile -->
+	<target name="java_compile" depends="make_dir">
+		<echo message="|-------------------------------------------------------------| " />
+		<echo message="| JAVA COMPILE START                                          | " />
+		<echo message="|-------------------------------------------------------------| " />
+		<javac target="${java.target}"
+			nowarn="true" deprecation="true" debug="true"
+			listfiles="false" failonerror="true" optimize="false" includeantruntime="false"
+			srcdir="${project_home}/src" destdir="${target_home_dir}/WEB-INF/classes" encoding="${java.compile.encoding}">
+
+			<include name="**/*.java" />
+
+			<classpath>
+				<path refid="common_classpath" />
+				<fileset dir="${app_classpath}/WebContent/WEB-INF/lib">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- source build -->
+	<target name="build" depends="java_compile">
+		<echo message="|-------------------------------------------------------------| " />
+		<echo message="| BUILD START                                                 | " />
+		<echo message="|-------------------------------------------------------------| " />
+		<copy todir="${target_home_dir}" overwrite="true">
+			<fileset dir="${project_home}/WebContent">
+				<include name="**/*"/>
+
+				<exclude name="WEB-INF/ibatis-config/maps/**/*"/>
+				<exclude name="WEB-INF/ibatis-config/maps"/>
+				<exclude name="WEB-INF/log4j-config/**/*"/>
+				<exclude name="WEB-INF/log4j-config"/>
+				<exclude name="WEB-INF/uaps-config/**/*"/>
+				<exclude name="WEB-INF/uaps-config"/>
+				<exclude name="WEB-INF/system-config/**/*"/>
+				<exclude name="WEB-INF/classes/*"/>
+				<exclude name="WEB-INF/spring-config/quartzJob*"/>
+
+				<exclude name="WEB-INF/web_test.xml"/>
+				<exclude name="WEB-INF/web_admin.xml"/>
+				<exclude name="WEB-INF/web_idp.xml"/>
+				<exclude name="WEB-INF/web_idp3.xml"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${target_home_dir}/WEB-INF/classes">
+			<fileset dir="${project_home}/WebContent/WEB-INF/ibatis-config">
+				<include name="maps/**/*"/>
+			</fileset>
+			<fileset dir="${project_home}/WebContent/WEB-INF/log4j-config">
+				<include name="**/*"/>
+				<exclude name="log4j_test.xml"/>
+				<exclude name="log4j_idp.xml"/>
+				<exclude name="log4j_admin.xml"/>
+			</fileset>
+			<fileset dir="${project_home}/WebContent/WEB-INF/uaps-config">
+				<include name="ehcache.xml"/>
+			</fileset>
+		</copy>
+
+		<copy file="${project_home}/WebContent/WEB-INF/web_test.xml" tofile="${target_home_dir}/WEB-INF/web.xml" overwrite="true"/>
+		<copy file="${project_home}/WebContent/WEB-INF/log4j-config/log4j_test.xml" tofile="${target_home_dir}/WEB-INF/classes/log4j.xml" overwrite="true"/>
+		<copy file="${project_home}/WebContent/WEB-INF/system-config/shared-config-test.properties" tofile="${target_home_dir}/WEB-INF/system-config/shared-config.properties" overwrite="true"/>
+		<copy file="${project_home}/WebContent/WEB-INF/system-config/system-config-test.xml" tofile="${target_home_dir}/WEB-INF/system-config/system-config.xml" overwrite="true"/>
+		<copy file="${project_home}/WebContent/WEB-INF/uaps-config/ldap.test.properties" tofile="${target_home_dir}/WEB-INF/classes/ldap.properties" overwrite="true"/>
+		<copy file="${project_home}/WebContent/WEB-INF/spring-config/quartzJob3.xml" tofile="${target_home_dir}/WEB-INF/spring-config/quartzJob.xml" overwrite="true"/>
+
+	</target>
+
+</project>
