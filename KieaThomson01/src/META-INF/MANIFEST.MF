@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Title: RunJar
-Version: ver 4.0
+Title: Kiea Thomson
+Version: ver 1.0
 Package: org.tain.runjar
 Created-By: TAIN, Inc.
 Company: TAIN, Inc.

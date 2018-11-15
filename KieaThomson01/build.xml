@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<project name="RunJar05" basedir="." default="make.jar">
-	<property name="target.jar" value="RunJar05.jar"/>
+<project name="KieaThomson01" basedir="." default="make.jar">
+	<property name="target.jar" value="KieaThomson01.jar"/>
 	<property name="base.dir" value="."/>
 	<property name="src.dir" value="src"/>
 	<property name="lib.dir" value="src/META-INF/lib"/>
@@ -61,8 +61,8 @@
 			<!-- manifest file="${manifest.file}"/ -->
 			<manifest>
 				<attribute name="Manifest-Version" value="1.0"/>
-				<attribute name="Title" value="RunJar"/>
-				<attribute name="Version" value="ver 4.0"/>
+				<attribute name="Title" value="KieaThomson"/>
+				<attribute name="Version" value="ver 1.0"/>
 				<attribute name="Package" value="org.tain.runjar"/>
 				<attribute name="Created-By" value="TAIN, Inc."/>
 				<attribute name="Company" value="TAIN, Inc."/>
