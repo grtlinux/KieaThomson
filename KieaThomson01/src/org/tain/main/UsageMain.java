@@ -17,7 +17,9 @@ public class UsageMain {
 	///////////////////////////////////////////////////////////////////////////
 
 	private static void test01(String[] args) throws Exception {
-
+		
+		System.out.println("------------------------------------------------");
+		
 		if (flag) {
 			String strJson = "{ 'id': 123, 'name': 'Kiea', 'age': 30, 'addr': 'Seoul' }";
 			JSONObject jsonObject = new JSONObject(strJson);
@@ -91,9 +93,19 @@ public class UsageMain {
 		
 		if (flag) {
 			// USAGE: test03
-			System.out.println("---------- arg0: test03 -----------");
-			System.out.println("COMMENT: test03 project");
-			System.out.println("USAGE: java -jar KieaThomson.jar test03");
+			System.out.println("---------- arg0: main01 -----------");
+			System.out.println("COMMENT: main01 project");
+			System.out.println("USAGE: java -jar KieaThomson.jar main01");
+			System.out.println("\t\t>>>>> org.tain.kiea.thomson.KieaThomsonMain");
+			System.out.println();
+		}
+
+		if (flag) {
+			// USAGE: test03
+			System.out.println("---------- arg0: main02 -----------");
+			System.out.println("COMMENT: main02 project");
+			System.out.println("USAGE: java -jar KieaThomson.jar main02");
+			System.out.println("\t\t>>>>> org.tain.test.DbConnTestMain");
 			System.out.println();
 		}
 	}

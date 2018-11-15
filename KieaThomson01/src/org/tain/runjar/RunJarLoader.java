@@ -25,7 +25,7 @@ public final class RunJarLoader {
 		flag = true;
 		//className = new Object() {}.getClass().getEnclosingClass().getName();
 		//resourcePath = className.replace('.', '/');
-		resourceBundle = ResourceBundle.getBundle("resources");
+		resourceBundle = ResourceBundle.getBundle("runjar");
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
