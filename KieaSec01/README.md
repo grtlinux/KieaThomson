@@ -58,6 +58,11 @@ dependencies {
 }
 ```
 
+- settings.gradle
+```
+rootProject.name = 'KieaSec01'
+```
+
 References
 ----------
 - []( ""):
