@@ -1,5 +1,8 @@
 package com.example.demo.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,9 +45,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		@SuppressWarnings("deprecation")
 		UserBuilder userBuilder = User.withDefaultPasswordEncoder();
 		
+		/*
 		UserDetails admin = userBuilder.username("admin").password("kang123").roles("ADMIN").build();
 		UserDetails user = userBuilder.username("user").password("kang123").roles("USER").build();
 		
 		return new InMemoryUserDetailsManager(admin, user);
+		*/
+		
+		List<UserDetails> users = new ArrayList<>();
+		users.add(userBuilder.username("admin").password("kang").roles("ADMIN").build());
+		users.add(userBuilder.username("user").password("kang").roles("USER").build());
+		
+		return new InMemoryUserDetailsManager(users);
+		
 	}
 }
