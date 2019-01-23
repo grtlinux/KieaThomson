@@ -36,6 +36,8 @@ public class AccountService implements UserDetailsService {
 		List<GrantedAuthority> lstAuthority = new ArrayList<>();
 		lstAuthority.add(new SimpleGrantedAuthority("ROLE_USER"));
 		
+		System.out.println(">>>>> " + account);
+		
 		return new User(account.getEmail(), account.getPassword(), lstAuthority);
 	}
 }
