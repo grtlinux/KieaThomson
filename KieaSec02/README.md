@@ -63,6 +63,48 @@ dependencies {
 rootProject.name = 'KieaSec02'
 ```
 
+- .gitignore
+```
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+############################
+/.gradle/
+/.mvn/
+/bin/
+/gradle
+/target/
+/war/
+
+*.md.html
+.DS*
+
+```
+
 References
 ----------
 - []( ""):
