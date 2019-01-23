@@ -23,7 +23,9 @@ public class AccountService implements UserDetailsService {
 	private PasswordEncoder passwordEncoder;
 	
 	public Account save(Account account) {
-		account.setPassword(this.passwordEncoder.encode(account.getPassword()));
+		if (!account.getPassword().contains("{noop}")) {
+			account.setPassword(this.passwordEncoder.encode(account.getPassword()));
+		}
 		return this.accountRepository.save(account);
 	}
 	

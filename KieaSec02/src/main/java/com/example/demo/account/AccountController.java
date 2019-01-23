@@ -14,6 +14,7 @@ public class AccountController {
 	public Account create() {
 		Account account = new Account();
 		account.setEmail("grtlinux@gmail.com");
+		account.setPassword("{noop}kang123");
 		account.setPassword("kang123");
 		
 		return this.accountService.save(account);
