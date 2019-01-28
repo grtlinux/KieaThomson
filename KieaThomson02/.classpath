@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/ansipage-3.2.1.0.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/commons-collections-3.2.2.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/commons-configuration-1.10.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/ema-3.2.1.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/ema-3.2.1.0.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/gson-2.7.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/jdacsUpalib.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/jfxrt.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/json-20180813.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/mysql-connector-java-5.1.11-bin.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/slf4j-api-1.7.12.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/slf4j-jdk14-1.7.12.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/upa-3.2.1.0.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/upaValueAdd-3.2.1.0.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/upaValueAddCache-3.2.1.0.jar"/>
+	<classpathentry kind="lib" path="src/META-INF/lib/xpp3-1.1.4c.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
